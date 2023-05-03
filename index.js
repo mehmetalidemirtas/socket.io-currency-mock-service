@@ -88,7 +88,7 @@ io.on("connection", (socket) => {
 
     console.log("Sending data:", data);
     socket.emit("currency-update", data);
-  }, 5000);
+  }, 10000);
 
   socket.on("disconnect", () => {
     console.log("user disconnected");
