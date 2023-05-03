@@ -7,7 +7,6 @@ const io = require("socket.io")(server, {
   },
 });
 
-// USD, EUR, GBP, IDR, JPY değerlerini içeren bir dizi oluşturuyoruz
 const currencies = [
   "USD",
   "EUR",
@@ -24,8 +23,6 @@ const currencies = [
   "DKK",
   "UAH",
   "IDR",
-  "ALI",
-  "TEST",
 ];
 
 function generateRandomValue() {
@@ -48,7 +45,6 @@ let previousSellValues = {
   NOK: null,
   DKK: null,
   UAH: null,
-  TEST: null,
 };
 
 io.on("connection", (socket) => {
