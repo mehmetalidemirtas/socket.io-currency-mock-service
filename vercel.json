@@ -10,8 +10,14 @@
       }
     }
   ],
-  "routes": [
-    { "src": "/(.*)", "dest": "/index.js" },
-    { "handle": "filesystem" }
+   "routes": [
+    {
+      "src": "/(.*)",
+      "headers": {
+        "Access-Control-Allow-Origin": "*"
+      },
+      "dest": "/index.js"
+    }
   ]
+
 }
