@@ -1,5 +1,9 @@
 const http = require("http");
-const server = http.createServer();
+const server = http.createServer((req, res) => {
+  res.writeHead(200, { 'Content-Type': 'text/html' });
+  res.write('<h1>Merhaba Dünya!</h1>');
+  res.end();
+});
 
 const io = require("socket.io")(server, {
   cors: {
