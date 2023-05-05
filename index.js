@@ -1,12 +1,12 @@
-const express = require("express");
-const app = express();
+const http = require("http");
+const server = http.createServer();
 
-const server = require("http").Server(app);
 const io = require("socket.io")(server, {
   cors: {
     origin: "*",
   },
 });
+
 const currencies = [
   "USD",
   "EUR",
@@ -28,7 +28,6 @@ const currencies = [
 function generateRandomValue() {
   return (Math.random() * (20 - 10) + 10).toFixed(2);
 }
-
 let previousSellValues = {
   USD: null,
   EUR: null,
@@ -50,55 +49,52 @@ let previousSellValues = {
 
 io.on("connection", (socket) => {
   console.log("a user connected");
-  
-  socket.on("get-currency-data", () => {
+  const data = currencies
+    .map((currency) => {
+      const buyValue = generateRandomValue();
+      const previousSellValue = 0;
+      const sellValue = (parseFloat(buyValue) + Math.random() * 2).toFixed(2);
+      previousSellValues[currency] = sellValue;
+      const changeRate = 0;
+      const backgroundColor = "#3E54AC";
+      const time = Date.now();
+      return `${currency}|${buyValue}|${sellValue}|${time}|${backgroundColor}|${changeRate}`;
+    })
+    .join(",");
+
+  console.log("Sending data:", data);
+  socket.emit("currency-update", data);
+
+  const interval = setInterval(() => {
     const data = currencies
       .map((currency) => {
         const buyValue = generateRandomValue();
-        const previousSellValue = 0;
+        const previousSellValue = previousSellValues[currency];
         const sellValue = (parseFloat(buyValue) + Math.random() * 2).toFixed(2);
         previousSellValues[currency] = sellValue;
-        const changeRate = 0;
-        const backgroundColor = "#3E54AC";
+        const changeRate = calculateChangeRate(previousSellValue, sellValue);
+        const backgroundColor =
+          previousSellValue === null
+            ? "#3E54AC"
+            : sellValue > previousSellValue
+            ? "#7AA874"
+            : sellValue < previousSellValue
+            ? "#FF4F5A"
+            : "#7AA874";
         const time = Date.now();
         return `${currency}|${buyValue}|${sellValue}|${time}|${backgroundColor}|${changeRate}`;
       })
       .join(",");
-    console.log("Sending initial data:", data);
+
+    console.log("Sending data:", data);
     socket.emit("currency-update", data);
+  }, 10000);
 
-    const interval = setInterval(() => {
-      const data = currencies
-        .map((currency) => {
-          const buyValue = generateRandomValue();
-          const previousSellValue = previousSellValues[currency];
-          const sellValue = (parseFloat(buyValue) + Math.random() * 2).toFixed(2);
-          previousSellValues[currency] = sellValue;
-          const changeRate = calculateChangeRate(previousSellValue, sellValue);
-          const backgroundColor =
-            previousSellValue === null
-              ? "#3E54AC"
-              : sellValue > previousSellValue
-              ? "#7AA874"
-              : sellValue < previousSellValue
-              ? "#FF4F5A"
-              : "#7AA874";
-          const time = Date.now();
-          return `${currency}|${buyValue}|${sellValue}|${time}|${backgroundColor}|${changeRate}`;
-        })
-        .join(",");
-
-      console.log("Sending updated data:", data);
-      socket.emit("currency-update", data);
-    }, 10000);
-
-    socket.on("disconnect", () => {
-      console.log("user disconnected");
-      clearInterval(interval);
-    });
+  socket.on("disconnect", () => {
+    console.log("user disconnected");
+    clearInterval(interval);
   });
 });
-
 function calculateChangeRate(previousValue, currentValue) {
   if (previousValue === null) {
     return 0;
@@ -106,9 +102,6 @@ function calculateChangeRate(previousValue, currentValue) {
   const change = ((currentValue - previousValue) / previousValue) * 100;
   return parseFloat(change.toFixed(2));
 }
-
-const PORT = process.env.PORT || 3000;
-
-server.listen(PORT, () => {
-  console.log(`Server listening on port ${PORT}`);
+server.listen(3000, () => {
+  console.log("listening on :3000");
 });
