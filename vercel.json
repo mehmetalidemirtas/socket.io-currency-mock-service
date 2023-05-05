@@ -1,5 +1,9 @@
 {
   "version": 2,
+  "routes": [
+    { "src": "/socket.io/", "dest": ":3000/socket.io/" },
+    { "src": "/(.*)", "dest": "http://localhost:3000/$1" }
+  ]
   "builds": [
     {
       "src": "index.js",
