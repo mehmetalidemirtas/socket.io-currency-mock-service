@@ -1,18 +1,18 @@
-# socket.io-currency-mock-service
 <h1 align="center">
   Currency Mock Service
 </h1>
-# Usage
-## Install
+
+## Usage
+### Install
 ```bash
    git clone mehmetalidemirtas/socket.io-currency-mock-service
    cd socket.io-currency-mock-service
    ```
-## Setup
+### Setup
 ```bash
    npm install
    ```
-## Start
+### Start
 ```bash
    node index.js
    ```
