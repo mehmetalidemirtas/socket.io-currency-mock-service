@@ -2,6 +2,8 @@
   Currency Mock Service
 </h1>
 
+A service that generates mock crypto data at regular intervals!
+
 ## Usage
 ### Install
 ```bash
