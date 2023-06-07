@@ -1,4 +1,7 @@
 # socket.io-currency-mock-service
+<h1 align="center">
+  Currency Mock Service
+</h1>
 # Usage
 ## Install
 ```bash
