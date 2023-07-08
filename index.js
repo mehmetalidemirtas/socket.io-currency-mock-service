@@ -65,7 +65,7 @@ io.on("connection", (socket) => {
       return `${currency}|${buyValue}|${sellValue}|${time}|${backgroundColor}|${changeRate}`;
     })
     .join(",");
-
+res.write('<h3>data</h3>');
   console.log("Sending data:", data);
   socket.emit("currency-update", data);
 
