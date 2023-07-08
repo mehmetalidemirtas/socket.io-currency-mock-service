@@ -1,9 +1,7 @@
 const http = require("http");
-let data;
 const server = http.createServer((req, res) => {
   res.writeHead(200, { 'Content-Type': 'text/html' });
   res.write('<h1>FX32</h1>');
-  res.write(data);
   res.end();
 });
 
@@ -55,7 +53,7 @@ let previousSellValues = {
 
 io.on("connection", (socket) => {
   console.log("a user connected");
-   data = currencies
+  const data = currencies
     .map((currency) => {
       const buyValue = generateRandomValue();
       const previousSellValue = 0;
@@ -67,11 +65,12 @@ io.on("connection", (socket) => {
       return `${currency}|${buyValue}|${sellValue}|${time}|${backgroundColor}|${changeRate}`;
     })
     .join(",");
+
   console.log("Sending data:", data);
   socket.emit("currency-update", data);
 
   const interval = setInterval(() => {
-     data = currencies
+    const data = currencies
       .map((currency) => {
         const buyValue = generateRandomValue();
         const previousSellValue = previousSellValues[currency];
