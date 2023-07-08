@@ -3,7 +3,7 @@ let data;
 const server = http.createServer((req, res) => {
   res.writeHead(200, { 'Content-Type': 'text/html' });
   res.write('<h1>FX32</h1>');
-  res.write('<h3>${data}</h3>');
+  res.write(data);
   res.end();
 });
 
