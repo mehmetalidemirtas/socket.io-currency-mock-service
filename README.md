@@ -2,7 +2,7 @@
   Currency Mock Service
 </h1>
 
-A service that generates mock crypto data at regular intervals!
+A service that generates mock currency data at regular intervals!
 
 ## Usage
 ### Install
