@@ -3,6 +3,7 @@
 </h1>
 
 A service that generates mock currency data at regular intervals!
+In return, it gives currency name, buy value, sell value, time, background color (red or green) and change rate (calculated with old and new currency value)
 
 ## Usage
 ### Install
